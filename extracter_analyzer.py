@@ -29,9 +29,9 @@ class ExtracterAnalyzer:
 
     @staticmethod
     def find_top_words(data, word_num):
-        doc = pd.Series(data)
-        top = doc.value_counts().head(word_num).index.tolist()  # Get 5 most frequent nouns
-        print("review_head Top " + str(word_num) + " words : " + str(top))
+        doc = pd.Series(Preprocessor.clear_doc(data))
+        top = doc.value_counts().head(word_num).index.tolist() 
+        print(str(word_num) + " words : " + str(top))
         return top
 
     @staticmethod
