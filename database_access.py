@@ -2,6 +2,7 @@ import sqlite3
 from sqlite3 import Error
 import pandas as pd
 
+
 class DatabaseAccess:
     def __init__(self, file_name):
         self.file_name = file_name
@@ -10,14 +11,19 @@ class DatabaseAccess:
             print("Connected to database!")
         except Error as e:
             print("Cannot connect to database!")
-            
+
     def __execute_query(self, query):
         cur = self.conn.cursor()
         cur.execute(query)
         return cur.fetchall()
 
-    def retrive_reviews(self):
-        ret = self.__execute_query("SELECT * FROM Review")
+    def retrive_reviews(self, product_id=None, star_rating=6):
+        if product_id is None:
+            ret = self.__execute_query(
+                "SELECT * FROM Review WHERE star_rating < 2")
+        else:
+            ret = self.__execute_query(
+                "SELECT * FROM Review WHERE product_id=", product_id, " AND star_rating < ", star_rating)
         data = pd.DataFrame(ret)
         data.columns = ['review_id', 'marketplace', 'customer_id', 'product_id', 'rate',
                         'helpful_votes', 'purchased', 'review_head', 'review_body', 'date']
@@ -42,22 +48,23 @@ class DatabaseAccess:
         return data
 
     def retrive_products_top_n(self, n):
-        data = pd.DataFrame(self.__execute_query("SELECT * FROM Product LIMIT " + str(n) ))
+        data = pd.DataFrame(self.__execute_query(
+            "SELECT * FROM Product LIMIT " + str(n)))
         data.columns = ['product_id', 'product_title', 'product_category']
 
         return data
-    
+
     def retrive_reviews_top_n(self, n):
-        ret = self.__execute_query("SELECT * FROM Review LIMIT " + n )
+        ret = self.__execute_query("SELECT * FROM Review LIMIT " + n)
         data = pd.DataFrame(ret)
         data.columns = ['review_id', 'marketplace', 'customer_id', 'product_id', 'rate',
                         'helpful_votes', 'purchased', 'review_head', 'review_body', 'date']
 
         return data
-    
+
     def retrive_reviews_with_products_top_n(self, n):
         ret = self.__execute_query(
-            "SELECT * FROM Review INNER JOIN Product ON Review.product_id = Product.product_id LIMIT " + str(n) )
+            "SELECT * FROM Review INNER JOIN Product ON Review.product_id = Product.product_id LIMIT " + str(n))
 
         data = pd.DataFrame(ret)
         data.columns = ['review_id', 'marketplace', 'customer_id', 'product_id', 'rate',
@@ -65,6 +72,15 @@ class DatabaseAccess:
                         'product_id', 'product_title', 'product_category']
 
         return data
+
+    def retrieve_top_worst_products(self, n=10, star_rating=3):
+        ret = self.__execute_query(
+            "SELECT product_id, COUNT(*) as count FROM Review GROUP BY product_id HAVING star_rating < ", star_rating, "ORDER BY count DESC")
+        data = pd.DataFrame(ret)
+        data.columns = ['product_id', 'count']
+
+        return data
+
 
 class DatabaseCreator:
     def __init__(self, db_file_name):
@@ -75,7 +91,7 @@ class DatabaseCreator:
             print("Connected to database!")
         except Error as e:
             print("Cannot connect to database!")
-            
+
         self.review_columns = """ (
                                     review_id integer PRIMARY KEY AUTOINCREMENT,
                                     marketplace text NOT NULL DEFAULT 'US' CHECK(length(marketplace) = 2),
@@ -98,18 +114,20 @@ class DatabaseCreator:
     def __execute_query(self, query):
         cur = self.conn.cursor()
         cur.execute(query)
+
     def __execute_insert(self, query, values):
         cur = self.conn.cursor()
         cur.execute(query, values)
-    
+
     def create_table(self, table_name, columns):
         self.__execute_query("PRAGMA foreign_keys = 1")
         try:
-            self.__execute_query("CREATE TABLE IF NOT EXISTS " + table_name + columns)
+            self.__execute_query(
+                "CREATE TABLE IF NOT EXISTS " + table_name + columns)
             print("Table CREATED: " + table_name)
         except Error as e:
             print("Table NOT CREATED: " + table_name + " " + str(e))
-    
+
     def insert_review(self, values):
         sql_insert_review = """INSERT INTO Review(marketplace, customer_id, product_id, 
                                             star_rating, helpful_votes, verified_purchase, 
