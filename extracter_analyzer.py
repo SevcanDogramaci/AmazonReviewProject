@@ -49,10 +49,10 @@ def get_polarity_scores(sentences):
     return pd.DataFrame(scores)
 
 
-def get_tfidf(sentences):
+def get_tfidf(sentences, min_df, max_df):
     from sklearn.feature_extraction.text import TfidfVectorizer
 
-    tfidf = TfidfVectorizer(ngram_range=(1, 2), max_df=4.0)
+    tfidf = TfidfVectorizer(ngram_range=(1, 2), max_df=max_df, min_df=min_df)
     features = tfidf.fit_transform(sentences)
     nmf = NMF(n_components=4, random_state=1).fit(features)
 

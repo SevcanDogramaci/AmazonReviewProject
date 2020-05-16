@@ -20,10 +20,10 @@ class DatabaseAccess:
     def retrive_reviews(self, product_id=None, star_rating=6):
         if product_id is None:
             ret = self.__execute_query(
-                "SELECT * FROM Review WHERE star_rating < 2")
+                f"SELECT * FROM Review WHERE helpful_votes>0 and star_rating < {star_rating}")
         else:
             ret = self.__execute_query(
-                "SELECT * FROM Review WHERE product_id=", product_id, " AND star_rating < ", star_rating)
+                f"SELECT * FROM Review WHERE product_id= {product_id} AND star_rating < ", star_rating)
         data = pd.DataFrame(ret)
         data.columns = ['review_id', 'marketplace', 'customer_id', 'product_id', 'rate',
                         'helpful_votes', 'purchased', 'review_head', 'review_body', 'date']
@@ -75,7 +75,7 @@ class DatabaseAccess:
 
     def retrieve_top_worst_products(self, n=10, star_rating=3):
         ret = self.__execute_query(
-            "SELECT product_id, COUNT(*) as count FROM Review GROUP BY product_id HAVING star_rating < ", star_rating, "ORDER BY count DESC")
+            f"SELECT product_id, COUNT(*) as count FROM Review GROUP BY product_id HAVING star_rating <  {star_rating} ORDER BY count DESC LIMIT {n}")
         data = pd.DataFrame(ret)
         data.columns = ['product_id', 'count']
 

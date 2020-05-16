@@ -6,12 +6,24 @@ from preprocessor import *
 import os
 
 
+def split_sentences(reviews):
+    sentences = []
+    for review in reviews:
+        for sentence in split_into_sentences(review):
+            sentences.append(sentence)
+    return sentences
+
+
 def get_reviews():
-    db_file = r"amazon_reviews_us_shoes_v1_00_2015_top10000.db"
+    db_file = r"amazon_reviews_us_Jewelry_v1_00.db"
     db_file = os.getcwd() + '\data\\' + db_file
 
     db = DatabaseAccess(db_file)
-    return db.retrive_reviews()
+    return db.retrive_reviews(star_rating=2)
+
+
+def isNegative(polarity, x):
+    return polarity["compound"][x] < 0.2 and polarity["neu"][x] < 0.9 and polarity["neg"][x] > 0.1
 
 
 def polarize_reviews_body(data_size, reviews):
@@ -19,14 +31,27 @@ def polarize_reviews_body(data_size, reviews):
     print(polarity)
     review_bodys = []
     for x in range(len(polarity)):
-        if polarity["compound"][x] < -0.05:
+        if isNegative(polarity, x):
             review_bodys.append(reviews["review_body"][x])
     return review_bodys
+"""
 
 
-def perform_tf_idf_and_print():
+def polarize_reviews_body(data_size, reviews):
+    polarity = get_polarity_scores(reviews[0:data_size])
+    print(polarity)
+    review_bodys = []
+    for x in range(len(polarity)):
+        if isNegative(polarity, x):
+            review_bodys.append(reviews[x])
+    return review_bodys
+"""
+
+
+def perform_tf_idf_and_print(min_df=0.05, max_df=0.9):
     print("\n<----- Tf Idf Starts ----->")
-    tf_idf_review_bodys = get_tfidf([str(sen) for sen in review_bodys])
+    tf_idf_review_bodys = get_tfidf(
+        [str(sen) for sen in review_bodys], min_df=min_df, max_df=max_df)
     print(tf_idf_review_bodys)
     return tf_idf_review_bodys
 
@@ -46,9 +71,16 @@ def perform_db_scan_and_print(data, review_bodys, min_samples_val, eps_val):
 
 # get reviews
 data_frame = get_reviews()
+"""
+# split into sentences
+sentences = split_sentences(data_frame["review_body"])
+[print("---- " , sentence) for sentence in sentences[0:100]]
 
+print("\n\n")
+
+"""
 # polarize reviews body
-review_bodys = polarize_reviews_body(10000, data_frame)
+review_bodys = polarize_reviews_body(2000, data_frame)
 
 data_frame = None
 print("Row number after polarity score: ", len(review_bodys))
@@ -61,7 +93,7 @@ print(review_bodys)
 find_top_words(review_bodys, 5)
 
 # tf-idf
-tf_idf_review_bodys = perform_tf_idf_and_print()
+tf_idf_review_bodys = perform_tf_idf_and_print(min_df=1, max_df=0.8)
 
 # db scan
 perform_db_scan_and_print(tf_idf_review_bodys, review_bodys, 5, 0.9)
