@@ -1,6 +1,5 @@
 from database_access import DatabaseCreator
 
-
 def parse_tsv_file(file):
     lines = []
 
@@ -57,34 +56,3 @@ with db_creator.conn:
         db_creator.insert_product(product_info)
         # insert review
         db_creator.insert_review(review_info)
-
-"""
-json_reviews = parse_json_file(json_review_file)
-json_products = parse_json_file(json_product_file)
-
-#insert json data
-for product in json_products:
-    product_info = (product["asin"], product["title"], product["main_cat"])
-    db_creator.insert_product(product_info)
-    
-#insert json data
-for review in json_reviews:
-    from datetime import datetime
-    ts = review["unixReviewTime"]
-    review_date = datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d')
-    
-    if(review["verified"]):
-        verified = 'Y'
-    else:
-        verified = 'N'
-        
-    try:
-        review_vote = review[vote]
-    except:
-        review_vote = 0
-        
-    review_info = ("US",review["reviewerID"],review["asin"], 
-                    review["overall"], review_vote, verified, 
-                    review["summary"], review["reviewText"], review_date)
-    db_creator.insert_review(review_info)
-"""

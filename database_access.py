@@ -20,7 +20,7 @@ class DatabaseAccess:
     def retrive_reviews(self, product_id=None, star_rating=6):
         if product_id is None:
             ret = self.__execute_query(
-                f"SELECT * FROM Review WHERE helpful_votes>0 and star_rating < {star_rating}")
+                f"SELECT * FROM Review WHERE star_rating < {star_rating}")
         else:
             ret = self.__execute_query(
                 f"SELECT * FROM Review WHERE product_id= {product_id} AND star_rating < ", star_rating)
