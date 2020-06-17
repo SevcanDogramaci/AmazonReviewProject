@@ -78,10 +78,10 @@ class Preprocessor:
         text = text.lower()
 
         # tokenize text
-        words = set(nltk.corpus.words.words())
+        """words = set(nltk.corpus.words.words())
 
         text = " ".join(w for w in nltk.wordpunct_tokenize(text)
-                        if w.lower() in words)
+                        if w.lower() in words)"""
 
         text = nltk.word_tokenize(text)
 
@@ -122,21 +122,28 @@ class Preprocessor:
                 clean_doc.append(clean_sentence)
 
         return clean_doc
-    
-    def clear_reviews(self, reviews):
-            clean_doc = []
-            
-            for i in range(0, len(reviews)):
-                review = reviews[i]
-                sentence_idx = 0
-                for sentence in self.__split_into_sentences(review):
-                    
+
+    def clear_reviews(self, reviews, data_size):
+        from extracter_analyzer import get_polarity, isNegative
+
+        clean_doc = []
+
+        for i in range(0, len(reviews)):
+            if len(clean_doc) >= data_size:
+                break
+            review = reviews[i]
+            sentence_idx = 0
+            for sentence in self.__split_into_sentences(review):
+                polarity = get_polarity(sentence)
+
+                if isNegative(polarity):
+
                     clean_sentence = self.__clear_sentence(sentence)
-                    
+
                     # eliminate short or empty strings.
                     if len(clean_sentence) > 2:
                         clean_doc.append((clean_sentence, i, sentence_idx))
-                    
-                    sentence_idx += 1
-                    
-            return clean_doc
+
+                sentence_idx += 1
+
+        return clean_doc
