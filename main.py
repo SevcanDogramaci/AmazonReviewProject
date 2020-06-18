@@ -40,18 +40,47 @@ def perform_db_scan_and_print(data, original_data, review_bodys, min_samples_val
 
     labels = dbres.labels_
     # print number of elements in each cluster
-    clusters = Counter(labels)
-    print(clusters)
+    cluster_counts = Counter(labels)
+    print(cluster_counts)
 
+    clusters = []
     # find and print dbscan result on actual text data - review_bodys
     for i in set(labels):
         if i != -1:  # do not print if noise (-1)
+            clusters.append([])
             print(i, "----")
             for x in range(len(data)):
                 if labels[x] == i:
+                    clusters[i].append(review_bodys[x])
                     print(">>>", (review_bodys[x]))
-                    #original_review_id = (review_bodys[x])[1]
-                    #print(original_data[original_review_id])
+                    find_nouns(get_review(review_bodys[x]))
+    
+    return clusters
+
+def get_review(sentence_tuple):
+    review = preproc.split_review_into_sentences(original_review_bodys[sentence_tuple[1]])
+    return review[sentence_tuple[2]]
+
+def find_nouns(sentence):
+    import spacy
+    nlp = spacy.load("en_core_web_sm")
+
+    sentence = nlp(sentence)
+    # iterate over nouns in sentence
+    print("Review: ", sentence)
+    for chunk in sentence.noun_chunks:
+        print("Noun chunk: ", chunk.text)
+        print("Noun: ", chunk.root.text)
+        print()
+        
+    """
+    for token in sentence:
+        #print(token, "-", token.pos_)
+        print("Token:" , token)
+        for child in token.rights:
+            print("Child -> ", child.text)
+            print("\n")
+    """
 
 # --- MAIN Starts
 

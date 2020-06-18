@@ -91,12 +91,12 @@ def polarize_reviews_body(data_size, reviews):
 # --------------------------------------------------------------------
 
 """
-str = "DONT BUY THESE!	Do not buy these! They break very fast I spun then for 15 minutes " + \
+s = "DONT BUY THESE!	Do not buy these! They break very fast I spun then for 15 minutes " + \
     "and the end flew off don't waste your money." + "They are made from cheap plastic and" + \
     " have cracks in them. Buy the poi balls they work a lot better if you only have limited funds."
-#str = "It comes with a rechargeable battery that does not seem to last all that long, especially if you use the flash a lot."
-#str = "After nearly 800 pictures I have found that this camera takes incredible pictures"
-#str = "The strap is horrible and gets in the way of parts the camera you need access to."
+#s = "It comes with a rechargeable battery that does not seem to last all that long, especially if you use the flash a lot."
+#s = "After nearly 800 pictures I have found that this camera takes incredible pictures"
+#s = "The strap is horrible and gets in the way of parts the camera you need access to."
 """
 
 def find_matched_phrases(phrases, patterns):
@@ -150,12 +150,17 @@ two_element_patterns = ["JJ;(NN|NNS);",
                         "(RB|RBR|RBS);(VBN|VBD);",
                         "(VBN|VBD);(RB|RBR|RBS);"]
 """
-two_element_ngrams = get_ngrams(str, 2)
-three_element_ngrams = get_ngrams(str, 3)
+two_element_ngrams = get_ngrams(s, 2)
+three_element_ngrams = get_ngrams(s, 3)
 
 find_matched_phrases(get_words_and_postags(
     two_element_ngrams), two_element_patterns)
 print(">> ---- <<")
 find_matched_phrases(get_words_and_postags(
     three_element_ngrams), three_element_patterns)
+"""
+"""
+from nltk import FreqDist
+fdist = FreqDist("The strap is horrible and gets in the way of parts the camera you need access to.".split(" "))
+print(fdist.most_common())
 """

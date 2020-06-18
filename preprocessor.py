@@ -11,6 +11,13 @@ class Preprocessor:
                 sentences.append(sentence)
         return sentences
 
+    def split_review_into_sentences(self, review):
+        sentences = []
+        for sentence in self.__split_into_sentences(review):
+            sentences.append(sentence)
+        return sentences
+
+
     def __split_into_sentences(self, text):
         import re
         alphabets = "([A-Za-z])"
@@ -93,7 +100,8 @@ class Preprocessor:
         #text = [lemmatizer.lemmatize(tag[0], Preprocessor.__get_wordnet_pos(tag[1])) for tag in pos_tags]
         #text = [lemmatizer.lemmatize(tag[0], Preprocessor.__get_wordnet_pos(tag[1])) for tag in pos_tags if tag[1] is wordnet.NOUN]
         text = [lemmatizer.lemmatize(tag[0], self.__get_wordnet_pos(
-            tag[1])) for tag in pos_tags if tag[1].startswith('N') or tag[1].startswith('J')]
+            tag[1])) for tag in pos_tags if tag[1].startswith('N')]
+            #tag[1])) for tag in pos_tags if tag[1].startswith('N') or tag[1].startswith('J')]
 
         # remove stopwords
         stopwords_en = stopwords.words('english')
