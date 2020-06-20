@@ -5,86 +5,86 @@ from spacy.matcher import Matcher
 
 # Patterns Starts --------------------
 two_element_patterns = [[{'TAG':'JJ'}, {'TAG':'NN'}],
-                            [{'TAG':'JJ'}, {'TAG':'NNS'}],
-                            
-                            [{'TAG':'RB'}, {'TAG':'JJ'}],
-                            [{'TAG':'RBR'}, {'TAG':'JJ'}],
-                            [{'TAG':'RBS'}, {'TAG':'JJ'}],
-                            
-                            [{'TAG':'VBN'}, {'TAG':'NN'}],
-                            [{'TAG':'VBN'}, {'TAG':'NNS'}],
-                            
-                            [{'TAG':'VBD'}, {'TAG':'NN'}],
-                            [{'TAG':'VBD'}, {'TAG':'NNS'}],
-                            
-                            [{'TAG':'RB'}, {'TAG':'VBN'}],
-                            [{'TAG':'RBR'}, {'TAG':'VBN'}],
-                            [{'TAG':'RBS'}, {'TAG':'VBN'}],
-                            
-                            [{'TAG':'RB'}, {'TAG':'VBD'}],
-                            [{'TAG':'RBR'}, {'TAG':'VBD'}],
-                            [{'TAG':'RBS'}, {'TAG':'VBD'}],
-                            
-                            [{'TAG':'VBN'}, {'TAG':'RB'}],
-                            [{'TAG':'VBN'}, {'TAG':'RBR'}],
-                            [{'TAG':'VBN'}, {'TAG':'RBS'}],
-                            
-                            [{'TAG':'VBD'}, {'TAG':'RB'}],
-                            [{'TAG':'VBD'}, {'TAG':'RBR'}],
-                            [{'TAG':'VBD'}, {'TAG':'RBS'}]]
+                        [{'TAG':'JJ'}, {'TAG':'NNS'}],
+                        
+                        [{'TAG':'RB'}, {'TAG':'JJ'}],
+                        [{'TAG':'RBR'}, {'TAG':'JJ'}],
+                        [{'TAG':'RBS'}, {'TAG':'JJ'}],
+                        
+                        [{'TAG':'VBN'}, {'TAG':'NN'}],
+                        [{'TAG':'VBN'}, {'TAG':'NNS'}],
+                        
+                        [{'TAG':'VBD'}, {'TAG':'NN'}],
+                        [{'TAG':'VBD'}, {'TAG':'NNS'}],
+                        
+                        [{'TAG':'RB'}, {'TAG':'VBN'}],
+                        [{'TAG':'RBR'}, {'TAG':'VBN'}],
+                        [{'TAG':'RBS'}, {'TAG':'VBN'}],
+                        
+                        [{'TAG':'RB'}, {'TAG':'VBD'}],
+                        [{'TAG':'RBR'}, {'TAG':'VBD'}],
+                        [{'TAG':'RBS'}, {'TAG':'VBD'}],
+                        
+                        [{'TAG':'VBN'}, {'TAG':'RB'}],
+                        [{'TAG':'VBN'}, {'TAG':'RBR'}],
+                        [{'TAG':'VBN'}, {'TAG':'RBS'}],
+                        
+                        [{'TAG':'VBD'}, {'TAG':'RB'}],
+                        [{'TAG':'VBD'}, {'TAG':'RBR'}],
+                        [{'TAG':'VBD'}, {'TAG':'RBS'}]]
     
 three_element_patterns = [[{'TAG':'JJ'}, {'TAG':'NN'}, {'TAG':'NN'}],
-                              [{'TAG':'JJ'}, {'TAG':'NN'}, {'TAG':'NNS'}],
-                              [{'TAG':'JJ'}, {'TAG':'NNS'}, {'TAG':'NN'}],
-                              [{'TAG':'JJ'}, {'TAG':'NNS'}, {'TAG':'NNS'}],
-                              
-                              [{'TAG':'NN'}, {'TAG':'VBZ'}, {'TAG':'JJ'}],
-                              
-                              [{'TAG':'RB'}, {'TAG':'JJ'}, {'TAG':'JJ'}],
-                              [{'TAG':'RB'}, {'TAG':'RB'}, {'TAG':'JJ'}],
-                              [{'TAG':'RB'}, {'TAG':'RBR'}, {'TAG':'JJ'}],
-                              [{'TAG':'RB'}, {'TAG':'RBS'}, {'TAG':'JJ'}],
-                              [{'TAG':'RBR'}, {'TAG':'JJ'}, {'TAG':'JJ'}],
-                              [{'TAG':'RBR'}, {'TAG':'RB'}, {'TAG':'JJ'}],
-                              [{'TAG':'RBR'}, {'TAG':'RBR'}, {'TAG':'JJ'}],
-                              [{'TAG':'RBR'}, {'TAG':'RBS'}, {'TAG':'JJ'}],
-                              [{'TAG':'RBS'}, {'TAG':'JJ'}, {'TAG':'JJ'}],
-                              [{'TAG':'RBS'}, {'TAG':'RB'}, {'TAG':'JJ'}],
-                              [{'TAG':'RBS'}, {'TAG':'RBR'}, {'TAG':'JJ'}],
-                              [{'TAG':'RBS'}, {'TAG':'RBS'}, {'TAG':'JJ'}],
-                              
-                              [{'TAG':'RB'}, {'TAG':'JJ'}, {'TAG':'NN'}],
-                              [{'TAG':'RB'}, {'TAG':'RB'}, {'TAG':'NN'}],
-                              [{'TAG':'RB'}, {'TAG':'RBR'}, {'TAG':'NN'}],
-                              [{'TAG':'RB'}, {'TAG':'RBS'}, {'TAG':'NN'}],
-                              [{'TAG':'RBR'}, {'TAG':'JJ'}, {'TAG':'NN'}],
-                              [{'TAG':'RBR'}, {'TAG':'RB'}, {'TAG':'NN'}],
-                              [{'TAG':'RBR'}, {'TAG':'RBR'}, {'TAG':'NN'}],
-                              [{'TAG':'RBR'}, {'TAG':'RBS'}, {'TAG':'NN'}],
-                              [{'TAG':'RBS'}, {'TAG':'JJ'}, {'TAG':'NN'}],
-                              [{'TAG':'RBS'}, {'TAG':'RB'}, {'TAG':'NN'}],
-                              [{'TAG':'RBS'}, {'TAG':'RBR'}, {'TAG':'NN'}],
-                              [{'TAG':'RBS'}, {'TAG':'RBS'}, {'TAG':'NN'}],
-                              
-                              [{'TAG':'RB'}, {'TAG':'JJ'}, {'TAG':'NNS'}],
-                              [{'TAG':'RB'}, {'TAG':'RB'}, {'TAG':'NNS'}],
-                              [{'TAG':'RB'}, {'TAG':'RBR'}, {'TAG':'NNS'}],
-                              [{'TAG':'RB'}, {'TAG':'RBS'}, {'TAG':'NNS'}],
-                              [{'TAG':'RBR'}, {'TAG':'JJ'}, {'TAG':'NNS'}],
-                              [{'TAG':'RBR'}, {'TAG':'RB'}, {'TAG':'NNS'}],
-                              [{'TAG':'RBR'}, {'TAG':'RBR'}, {'TAG':'NNS'}],
-                              [{'TAG':'RBR'}, {'TAG':'RBS'}, {'TAG':'NNS'}],
-                              [{'TAG':'RBS'}, {'TAG':'JJ'}, {'TAG':'NNS'}],
-                              [{'TAG':'RBS'}, {'TAG':'RB'}, {'TAG':'NNS'}],
-                              [{'TAG':'RBS'}, {'TAG':'RBR'}, {'TAG':'NNS'}],
-                              [{'TAG':'RBS'}, {'TAG':'RBS'}, {'TAG':'NNS'}]
-                              ]
+                          [{'TAG':'JJ'}, {'TAG':'NN'}, {'TAG':'NNS'}],
+                          [{'TAG':'JJ'}, {'TAG':'NNS'}, {'TAG':'NN'}],
+                          [{'TAG':'JJ'}, {'TAG':'NNS'}, {'TAG':'NNS'}],
+                          
+                          [{'TAG':'NN'}, {'TAG':'VBZ'}, {'TAG':'JJ'}],
+                          
+                          [{'TAG':'RB'}, {'TAG':'JJ'}, {'TAG':'JJ'}],
+                          [{'TAG':'RB'}, {'TAG':'RB'}, {'TAG':'JJ'}],
+                          [{'TAG':'RB'}, {'TAG':'RBR'}, {'TAG':'JJ'}],
+                          [{'TAG':'RB'}, {'TAG':'RBS'}, {'TAG':'JJ'}],
+                          [{'TAG':'RBR'}, {'TAG':'JJ'}, {'TAG':'JJ'}],
+                          [{'TAG':'RBR'}, {'TAG':'RB'}, {'TAG':'JJ'}],
+                          [{'TAG':'RBR'}, {'TAG':'RBR'}, {'TAG':'JJ'}],
+                          [{'TAG':'RBR'}, {'TAG':'RBS'}, {'TAG':'JJ'}],
+                          [{'TAG':'RBS'}, {'TAG':'JJ'}, {'TAG':'JJ'}],
+                          [{'TAG':'RBS'}, {'TAG':'RB'}, {'TAG':'JJ'}],
+                          [{'TAG':'RBS'}, {'TAG':'RBR'}, {'TAG':'JJ'}],
+                          [{'TAG':'RBS'}, {'TAG':'RBS'}, {'TAG':'JJ'}],
+                          
+                          [{'TAG':'RB'}, {'TAG':'JJ'}, {'TAG':'NN'}],
+                          [{'TAG':'RB'}, {'TAG':'RB'}, {'TAG':'NN'}],
+                          [{'TAG':'RB'}, {'TAG':'RBR'}, {'TAG':'NN'}],
+                          [{'TAG':'RB'}, {'TAG':'RBS'}, {'TAG':'NN'}],
+                          [{'TAG':'RBR'}, {'TAG':'JJ'}, {'TAG':'NN'}],
+                          [{'TAG':'RBR'}, {'TAG':'RB'}, {'TAG':'NN'}],
+                          [{'TAG':'RBR'}, {'TAG':'RBR'}, {'TAG':'NN'}],
+                          [{'TAG':'RBR'}, {'TAG':'RBS'}, {'TAG':'NN'}],
+                          [{'TAG':'RBS'}, {'TAG':'JJ'}, {'TAG':'NN'}],
+                          [{'TAG':'RBS'}, {'TAG':'RB'}, {'TAG':'NN'}],
+                          [{'TAG':'RBS'}, {'TAG':'RBR'}, {'TAG':'NN'}],
+                          [{'TAG':'RBS'}, {'TAG':'RBS'}, {'TAG':'NN'}],
+                          
+                          [{'TAG':'RB'}, {'TAG':'JJ'}, {'TAG':'NNS'}],
+                          [{'TAG':'RB'}, {'TAG':'RB'}, {'TAG':'NNS'}],
+                          [{'TAG':'RB'}, {'TAG':'RBR'}, {'TAG':'NNS'}],
+                          [{'TAG':'RB'}, {'TAG':'RBS'}, {'TAG':'NNS'}],
+                          [{'TAG':'RBR'}, {'TAG':'JJ'}, {'TAG':'NNS'}],
+                          [{'TAG':'RBR'}, {'TAG':'RB'}, {'TAG':'NNS'}],
+                          [{'TAG':'RBR'}, {'TAG':'RBR'}, {'TAG':'NNS'}],
+                          [{'TAG':'RBR'}, {'TAG':'RBS'}, {'TAG':'NNS'}],
+                          [{'TAG':'RBS'}, {'TAG':'JJ'}, {'TAG':'NNS'}],
+                          [{'TAG':'RBS'}, {'TAG':'RB'}, {'TAG':'NNS'}],
+                          [{'TAG':'RBS'}, {'TAG':'RBR'}, {'TAG':'NNS'}],
+                          [{'TAG':'RBS'}, {'TAG':'RBS'}, {'TAG':'NNS'}]]
 
 patterns = two_element_patterns + three_element_patterns
 # Pattern Ends --------------------
 
  
 class PatternMatcher:
+    
     def __init__(self):
         self.patterns = patterns
         
@@ -143,8 +143,7 @@ class PatternMatcher:
             print(objects)
             
             for most_oc in most_occur:
-                most_oc = most_oc[0]
-                objects[most_oc] = []
+                objects[most_oc[0]] = []
     
             print("Most occuring: ", most_occur)
             
@@ -162,28 +161,17 @@ class PatternMatcher:
                         most_oc = most_oc[0]
                         print("*", most_oc)
                         if most_oc in span.text:
+                            
                             print("FOUND -> ", span, self.patterns[match_id])
                             objects[most_oc].append(self.__search_opinion_word(match_id, span))
                             
             print(objects)
             print("\n")
             
-        #print(cluster_objects_and_opinions)
-            
+        print("<<< Extracted Objects and Opinions >>>")
         for i, cluster in enumerate(cluster_objects_and_opinions):
             print("\n>>> Cluster ", i, "<<<")
             
             for obj, opinion in cluster.items():
                 print("-- ", obj, ": ", set(opinion))
-            
-            
-            
         return cluster_objects_and_opinions
-    
-    
-    
-    
-    
-    
-    
-    
