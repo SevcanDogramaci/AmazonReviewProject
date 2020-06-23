@@ -100,16 +100,22 @@ class PatternMatcher:
         matches = matcher(sentence)
         for match_id, start, end in matches:
             span = sentence[start:end]
-            print(matcher.get(match_id)[1], start, end, span.text)
+            #print(matcher.get(match_id)[1], start, end, span.text)
+            print("Match : ", span.text)
             
         return matches
-        
-    def __search_opinion_word(self, match_id, match):
+    
+    def __check_polarity(self, match):
         from extracter_analyzer import get_polarity
         
-        print("polarity: ", get_polarity(match.text))
-        print("match: ", match)
+        polarity = get_polarity(match.text)
+        #print("polarity: ", polarity)
+        #print("match: ", match)
         
+        return polarity["compound"] < 0.0 or polarity["neu"] > 0.95
+        
+    def __search_opinion_word(self, match_id, match):
+
         if match_id <= 1:
             opinion_word = match.text.split()[0]
         elif 4 < match_id < 9:
@@ -125,7 +131,7 @@ class PatternMatcher:
         else:
             return
             
-        print("Opinion word: ", opinion_word)
+        print("Opinion word: ", opinion_word, "\n")
         return opinion_word
     
     def extract_objects(self, clusters):
@@ -140,12 +146,12 @@ class PatternMatcher:
             
             cluster_objects_and_opinions[i] = {}
             objects = cluster_objects_and_opinions[i]
-            print(objects)
+            #print(objects)
             
             for most_oc in most_occur:
                 objects[most_oc[0]] = []
     
-            print("Most occuring: ", most_occur)
+            print(">>> Most occuring words : ", most_occur)
             
             for item in val:
                 cleaned, sentence, matches = item
@@ -159,14 +165,15 @@ class PatternMatcher:
     
                     for most_oc in most_occur:
                         most_oc = most_oc[0]
-                        print("*", most_oc)
+                        #print("*", most_oc)
                         if most_oc in span.text:
                             
-                            print("FOUND -> ", span, self.patterns[match_id])
-                            objects[most_oc].append(self.__search_opinion_word(match_id, span))
+                           if self.__check_polarity(span):
+                               print("Pattern Match Found -> ", span, self.patterns[match_id])
+                               objects[most_oc].append(self.__search_opinion_word(match_id, span))
                             
             print(objects)
-            print("\n")
+            print("\n\n")
             
         print(cluster_objects_and_opinions)
         return cluster_objects_and_opinions
