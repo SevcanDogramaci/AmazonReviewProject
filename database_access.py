@@ -23,11 +23,10 @@ class DatabaseAccess:
                 f"SELECT * FROM Review WHERE star_rating < {star_rating}")
         else:
             ret = self.__execute_query(
-                f"SELECT * FROM Review WHERE product_id= {product_id} AND star_rating < ", star_rating)
+                f"SELECT * FROM Review WHERE product_id= '{product_id}' AND star_rating <  {star_rating}")
         data = pd.DataFrame(ret)
         data.columns = ['review_id', 'marketplace', 'customer_id', 'product_id', 'rate',
                         'helpful_votes', 'purchased', 'review_head', 'review_body', 'date']
-
         return data
 
     def retrive_reviews_with_products(self):
