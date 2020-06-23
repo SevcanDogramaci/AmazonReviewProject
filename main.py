@@ -66,8 +66,99 @@ def extract_results(labels, original_data, review_bodys):
                     
                     print(clusters[i], "\n")
     print(clusters)  
-    pattern_matcher.extract_objects(clusters)
+    return pattern_matcher.extract_objects(clusters)
 
+def stringify_results(objects):
+
+    objects_text = ""
+    adjectives_text = ""
+
+    for obj in objects:
+        for key in obj.keys():
+            objects_text += " " + key
+        for value in obj.values():
+            for val in value:
+                if val is not None:
+                    adjectives_text += " " + val
+    return objects_text, adjectives_text
+
+def plot_wordcloud(text):
+    from wordcloud import WordCloud
+    import matplotlib.pyplot as plt
+
+    wordcloud = WordCloud(width = 800, height = 800, 
+                background_color ='white', 
+                min_font_size = 8).generate(text) 
+
+    # plot the WordCloud image                        
+    plt.figure(figsize = (5, 5), facecolor = None) 
+    plt.imshow(wordcloud, interpolation='bilinear') 
+    plt.axis("off") 
+
+    plt.show() 
+            
+def get_review(sentence_tuple):
+    review = preproc.split_review_into_sentences(original_review_bodys[sentence_tuple[1]])
+    return review[sentence_tuple[2]]
+
+
+# --- MAIN Starts
+
+
+# initializations
+dataset_name = "SHOES"
+
+# get reviews from database
+data_frame = get_reviews()
+
+original_review_bodys = list(data_frame["review_body"])
+
+preproc = Preprocessor()
+
+# split into sentences
+#review_bodys = preproc.split_sentences(reviews=review_bodys)
+
+# filter reviews according to sentiment analysis results
+# original_review_bodys = polarize_reviews_body(200, review_bodys)
+# print("Row number after polarity score: ", len(review_bodys))
+
+data_frame = None  # to free memory space
+
+# clear reviews body with preprocessing, inside preprocessing.py
+cleaned_review_bodys = preproc.clear_reviews(
+    original_review_bodys, data_size=10000)
+
+print(cleaned_review_bodys)
+
+# get top words from reviews body, inside preprocessing.py
+#find_top_words(review_bodys, 5)
+
+# tf-idf
+tf_idf_review_bodys = perform_tf_idf_and_print(min_df=1, max_df=0.8)
+
+#plotter = Plotter()
+#eps = plotter.plot_k_distance(tf_idf_review_bodys, k=2)
+
+# db scan with min_samples and eps (eps observed from k-distance graph)
+min_samples_val = 6
+eps_val = 0.9
+db_res = perform_db_scan(tf_idf_review_bodys, min_samples_val, eps_val)
+plot_db_scan(db_res, tf_idf_review_bodys, min_samples_val, eps_val, dataset_name)
+results = extract_results(db_res.labels_, original_review_bodys, cleaned_review_bodys)
+
+objects, adjectives= stringify_results(results)
+
+plot_wordcloud(objects) 
+plot_wordcloud(adjectives)
+
+# perform_db_scan_and_print(
+#     tf_idf_review_bodys, original_review_bodys, cleaned_review_bodys, 3, 1.0, dataset_name)
+
+
+# --- MAIN Finishes
+
+
+"""
 def perform_db_scan_and_print(data, original_data, review_bodys, min_samples_val, eps_val, dataset_name):
     
     print("\n<----- Db Scan Starts ----->")
@@ -105,58 +196,4 @@ def perform_db_scan_and_print(data, original_data, review_bodys, min_samples_val
                     print(clusters[i], "\n")
     print(clusters)  
     pattern_matcher.extract_objects(clusters)
-                      
-                   
-def get_review(sentence_tuple):
-    review = preproc.split_review_into_sentences(original_review_bodys[sentence_tuple[1]])
-    return review[sentence_tuple[2]]
-
-
-# --- MAIN Starts
-
-
-# initializations
-dataset_name = "SHOES"
-
-# get reviews from database
-data_frame = get_reviews()
-
-original_review_bodys = list(data_frame["review_body"])
-
-preproc = Preprocessor()
-
-# split into sentences
-#review_bodys = preproc.split_sentences(reviews=review_bodys)
-
-# filter reviews according to sentiment analysis results
-# original_review_bodys = polarize_reviews_body(200, review_bodys)
-# print("Row number after polarity score: ", len(review_bodys))
-
-data_frame = None  # to free memory space
-
-# clear reviews body with preprocessing, inside preprocessing.py
-cleaned_review_bodys = preproc.clear_reviews(
-    original_review_bodys, data_size=500)
-
-print(cleaned_review_bodys)
-
-# get top words from reviews body, inside preprocessing.py
-#find_top_words(review_bodys, 5)
-
-# tf-idf
-tf_idf_review_bodys = perform_tf_idf_and_print(min_df=1, max_df=0.8)
-
-#plotter = Plotter()
-#eps = plotter.plot_k_distance(tf_idf_review_bodys, k=2)
-
-# db scan with min_samples and eps (eps observed from k-distance graph)
-min_samples_val = 3
-eps_val = 1.0
-db_res = perform_db_scan(tf_idf_review_bodys, min_samples_val, eps_val)
-plot_db_scan(db_res, tf_idf_review_bodys, min_samples_val, eps_val, dataset_name)
-extract_results(db_res.labels_, original_review_bodys, cleaned_review_bodys)
-# perform_db_scan_and_print(
-#     tf_idf_review_bodys, original_review_bodys, cleaned_review_bodys, 3, 1.0, dataset_name)
-
-
-# --- MAIN Finishes
+"""
