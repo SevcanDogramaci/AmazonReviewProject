@@ -85,10 +85,10 @@ class Preprocessor:
         text = text.lower()
 
         # tokenize text
-        """words = set(nltk.corpus.words.words())
+        words = set(nltk.corpus.words.words())
 
         text = " ".join(w for w in nltk.wordpunct_tokenize(text)
-                        if w.lower() in words)"""
+                        if w.lower() in words)
 
         text = nltk.word_tokenize(text)
 
