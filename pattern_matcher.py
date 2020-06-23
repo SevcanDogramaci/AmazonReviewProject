@@ -175,6 +175,10 @@ class PatternMatcher:
             print(objects)
             print("\n\n")
             
-        print(cluster_objects_and_opinions)
+        print("<<< Extracted Objects and Opinions >>>")
+        for i, cluster in enumerate(cluster_objects_and_opinions):
+            print("\n>>> Cluster ", i, "<<<")
+            
+            for obj, opinion in cluster.items():
+                print("-- ", obj, ": ", set(opinion))
         return cluster_objects_and_opinions
-    

@@ -1,5 +1,5 @@
 from sklearn.cluster import DBSCAN
-import hdbscan
+#import hdbscan
 
 
 class DbScan:
@@ -17,7 +17,7 @@ class DbScan:
               metrics.silhouette_score(data, labels))
         return clusters
 
-    def perform_hdb_scan(self, data):
+    """def perform_hdb_scan(self, data):
         from sklearn.datasets import make_blobs
 
         data, _ = make_blobs(1000)
@@ -27,4 +27,4 @@ class DbScan:
         hierarchy = clusterer.cluster_hierarchy_
         alt_labels = hierarchy.get_clusters(0.100, 5)
         hierarchy.plot()
-        return cluster_labels
+        return cluster_labels"""
