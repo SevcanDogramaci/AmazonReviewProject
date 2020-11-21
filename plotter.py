@@ -6,11 +6,23 @@ import random
 class Plotter:
 
     def __init__(self):
-        super().__init__()
-        self.labels_color_map = {}
+            super().__init__()
+            self.labels_color_map = { 0: '#F00000',
+                                    1: '#00F000',
+                                    2: '#0000F0',
+                                    3: '#f08c14',
+                                    4: '#f014f0',
+                                    5: '#f0dc28',
+                                    6: '#a028dc',
+                                    7: '#00b4f0',
+                                    8: '#007814',
+                                    9: '#a05000'}
 
     def plot_k_distance(self, data, k=2):
         from sklearn.neighbors import NearestNeighbors
+        title = 'K-distance'
+        x_label = 'distance no'
+        y_label = 'distance'
         
         print("k : %d" % k)
 
@@ -27,6 +39,9 @@ class Plotter:
         distances = distances[:, 1]
         plt.subplot(1, 2, 1)
         plt.plot(distances)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
 
         # eliminate distances with 0 value not to stick
         distances = [distance for distance in distances if distance > 0.0]
@@ -52,15 +67,32 @@ class Plotter:
         # plotting
         plt.subplot(1, 2, 2)
         plt.plot(x, y)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
         plt.hlines(distances[i], plt.xlim()[0], plt.xlim()[1], linestyles='dashed')
         plt.tight_layout()
+        plt.savefig('k_distance.jpg')
         plt.show()
+   
         
         return round(distances[i], 2)
 
+    """
     def __get_color(self, index):
         if not (index in self.labels_color_map):
             def r(): return random.randint(0, 255)
+            self.labels_color_map[index] = ('#%02X%02X%02X' % (r(), r(), r()))
+        return self.labels_color_map[index]
+    """
+
+    def __get_color(self, index):
+        if not (index in self.labels_color_map):
+            #def r(): return random.randint(0, 255)
+            def r(): return random.randrange(0,255,20)
+            color = ('#%02X%02X%02X' % (r(), r(), r()))
+            if color in self.labels_color_map.values():
+                return self.__get_color(index)
             self.labels_color_map[index] = ('#%02X%02X%02X' % (r(), r(), r()))
         return self.labels_color_map[index]
 
@@ -79,6 +111,8 @@ class Plotter:
         _, ax = plt.subplots()
         x_ax = []
         y_ax = []
+        x_ax_label = "PCA component 1"
+        y_ax_label = "PCA component 2"
 
         classes = list(set(labels))
         
@@ -104,7 +138,7 @@ class Plotter:
         import matplotlib.patches as mpatches
         patches = []
         c = [value for value in labels if value != -1]
-        for i in range(len(self.labels_color_map.values())):
+        for i in range(len(classes)):
             patches.append(mpatches.Patch(color=list(self.labels_color_map.values())[i], label=classes[i]))
 
 
@@ -120,6 +154,10 @@ class Plotter:
         plt.legend(bbox_to_anchor=(0., y_len, 1., .102), ncol=12, loc='center', 
                    handles=patches, labels=classes, title="Clusters")
         plt.title(title)
+        plt.xlabel(x_ax_label)
+        plt.ylabel(y_ax_label)
+        #plt.tight_layout()
+        plt.savefig(title.replace(" ", "").replace(":", "_")+'.jpg', bbox_inches='tight')
         plt.show()
 
         

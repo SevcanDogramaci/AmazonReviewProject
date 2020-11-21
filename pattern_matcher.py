@@ -109,10 +109,8 @@ class PatternMatcher:
         from extracter_analyzer import get_polarity
         
         polarity = get_polarity(match.text)
-        #print("polarity: ", polarity)
-        #print("match: ", match)
         
-        return polarity["compound"] < 0.0 or polarity["neu"] > 0.95
+        return polarity["compound"] < 0.0, polarity
         
     def __search_opinion_word(self, match_id, match):
 
@@ -155,6 +153,7 @@ class PatternMatcher:
             
             for item in val:
                 cleaned, sentence, matches = item
+                sen = sentence
                 sentence = nlp(sentence)
                 
                 if len(matches) < 1:
@@ -167,18 +166,23 @@ class PatternMatcher:
                         most_oc = most_oc[0]
                         #print("*", most_oc)
                         if most_oc in span.text:
-                            
-                           if self.__check_polarity(span):
-                               print("Pattern Match Found -> ", span, self.patterns[match_id])
-                               objects[most_oc].append(self.__search_opinion_word(match_id, span))
+                            is_negative, polarity = self.__check_polarity(span)
+                            if is_negative:
+                                print("Pattern Match Found -> ", span, self.patterns[match_id])
+                                objects[most_oc].append((self.__search_opinion_word(match_id, span), polarity, span.text, sen))
                             
             print(objects)
             print("\n\n")
-            
+        """    
         print("<<< Extracted Objects and Opinions >>>")
         for i, cluster in enumerate(cluster_objects_and_opinions):
             print("\n>>> Cluster ", i, "<<<")
             
             for obj, opinion in cluster.items():
                 print("-- ", obj, ": ", set(opinion))
+        """
+                
         return cluster_objects_and_opinions
+
+
+                                

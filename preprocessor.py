@@ -151,6 +151,9 @@ class Preprocessor:
                     # eliminate short or empty strings.
                     if len(clean_sentence) > 2:
                         clean_doc.append((clean_sentence, i, sentence_idx))
+                        
+                        print("Original Sentence: ", sentence)
+                        print("Preprocessed Sentence: ", clean_sentence)
 
                 sentence_idx += 1
 
