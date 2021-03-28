@@ -14,12 +14,11 @@ Python 3+ (developed with 3.7)
 
 Available in `requirements.txt`. Install with `pip install -r requirements.txt`.
 
-# **Installation**
+## **Installation**
 
-You can clone the project by running 
+You can clone the project by running the following command or download it as a zip file via [GitHub](https://github.com/SevcanDogramaci/AmazonReviewProject).
 
-`git clone [https://github.com/SevcanDogramaci/AmazonReviewProject.git](https://github.com/SevcanDogramaci/AmazonReviewProject.git)` command or download it as a zip file via GitHub.
-
+`git clone https://github.com/SevcanDogramaci/AmazonReviewProject.git`
 ## Usage
 
 To run the system, you can use either of the files and run :
