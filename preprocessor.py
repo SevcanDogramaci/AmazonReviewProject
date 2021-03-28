@@ -97,11 +97,8 @@ class Preprocessor:
 
         # stemming
         lemmatizer = WordNetLemmatizer()
-        #text = [lemmatizer.lemmatize(tag[0], Preprocessor.__get_wordnet_pos(tag[1])) for tag in pos_tags]
-        #text = [lemmatizer.lemmatize(tag[0], Preprocessor.__get_wordnet_pos(tag[1])) for tag in pos_tags if tag[1] is wordnet.NOUN]
         text = [lemmatizer.lemmatize(tag[0], self.__get_wordnet_pos(
             tag[1])) for tag in pos_tags if tag[1].startswith('N')]
-            #tag[1])) for tag in pos_tags if tag[1].startswith('N') or tag[1].startswith('J')]
 
         # remove stopwords
         stopwords_en = stopwords.words('english')

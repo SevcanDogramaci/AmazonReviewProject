@@ -100,7 +100,7 @@ class PatternMatcher:
         matches = matcher(sentence)
         for match_id, start, end in matches:
             span = sentence[start:end]
-            #print(matcher.get(match_id)[1], start, end, span.text)
+
             print("Match : ", span.text)
             
         return matches
@@ -144,7 +144,6 @@ class PatternMatcher:
             
             cluster_objects_and_opinions[i] = {}
             objects = cluster_objects_and_opinions[i]
-            #print(objects)
             
             for most_oc in most_occur:
                 objects[most_oc[0]] = []
@@ -164,7 +163,7 @@ class PatternMatcher:
     
                     for most_oc in most_occur:
                         most_oc = most_oc[0]
-                        #print("*", most_oc)
+
                         if most_oc in span.text:
                             is_negative, polarity = self.__check_polarity(span)
                             if is_negative:
@@ -173,6 +172,8 @@ class PatternMatcher:
                             
             print(objects)
             print("\n\n")
+
+        # print extracted objects and opinions
         """    
         print("<<< Extracted Objects and Opinions >>>")
         for i, cluster in enumerate(cluster_objects_and_opinions):

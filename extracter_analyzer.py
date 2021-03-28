@@ -81,9 +81,6 @@ def get_ngrams(sentence, n):
     return ngrams(sentence.split(), n)
 
 
-# def isNegative(polarity, x):
-#    return polarity["compound"][x] < 0 and polarity["neu"][x] < 0.9
-
 def isNegative(polarity):
     return polarity["compound"] < 0 and polarity["neu"] < 0.9
 

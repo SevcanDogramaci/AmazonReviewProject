@@ -78,14 +78,6 @@ class Plotter:
         
         return round(distances[i], 2)
 
-    """
-    def __get_color(self, index):
-        if not (index in self.labels_color_map):
-            def r(): return random.randint(0, 255)
-            self.labels_color_map[index] = ('#%02X%02X%02X' % (r(), r(), r()))
-        return self.labels_color_map[index]
-    """
-
     def __get_color(self, index):
         if not (index in self.labels_color_map):
             #def r(): return random.randint(0, 255)
@@ -130,9 +122,6 @@ class Plotter:
             x_ax.append(pca_comp_1)
             y_ax.append(pca_comp_2)
             
-            """else:
-                ax.scatter(pca_comp_1, pca_comp_2, c=color, label=f"Cluster {labels[index]}", zorder=10)
-            """
         colors = ListedColormap(self.labels_color_map.values())
         
         import matplotlib.patches as mpatches
@@ -156,58 +145,6 @@ class Plotter:
         plt.title(title)
         plt.xlabel(x_ax_label)
         plt.ylabel(y_ax_label)
-        #plt.tight_layout()
+
         plt.savefig(title.replace(" ", "").replace(":", "_")+'.jpg', bbox_inches='tight')
         plt.show()
-
-        
-        
-"""        
-# plots clusters obtained from dbscan, black points for noise, other colors for clusters
-def plot_cluster(cluster, sample_matrix):
-    from sklearn.preprocessing import StandardScaler
-
-    # standardize matrix by removing the mean and scaling to unit variance
-    #sample_matrix = StandardScaler().fit_transform(sample_matrix)
-    
-    # get matrix shape 
-    core_samples_mask = np.zeros_like(cluster.labels_, dtype=bool)
-    
-    # mark core points of clusters
-    core_samples_mask[cluster.core_sample_indices_] = True
-    labels = cluster.labels_
-
-    # number of clusters in labels, ignoring noise if present. 
-    n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0) 
-    
-    # Black removed and is used for noise instead
-    unique_labels = set(labels)
-
-    # assign colors to each unique label
-    colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
-    
-    for k, col in zip(unique_labels, colors):
-
-        # make noises black color
-        if k == -1:
-            col = 'k'
-
-        # make elements of cluster True
-        class_member_mask = (labels == k)  # generator comprehension
-        
-        # X is your data matrix
-        X = np.array(sample_matrix)
-
-        # core points in this cluster
-        xy = X[class_member_mask & core_samples_mask]
-        plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
-                 markeredgecolor='k', markersize=14)
-
-        # non-core points in this cluster
-        #xy = X[class_member_mask & ~core_samples_mask]
-        #plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
-         #        markeredgecolor='k', markersize=6)
-
-    plt.title('number of clusters: %d' %n_clusters_) 
-    plt.show()
-    """

@@ -173,14 +173,12 @@ print("Total number of reviews left: ", len(
     set([review_idx for _, review_idx, _ in cleaned_review_bodys])))
 
 input("\n\n Enter To Continue")
-# get top words from reviews body, inside preprocessing.py
-#find_top_words(review_bodys, 5)
 
 # tf-idf
 tf_idf_review_bodys = perform_tf_idf_and_print(min_df=1, max_df=0.8)
 
-#plotter = Plotter()
-#eps = plotter.plot_k_distance(tf_idf_review_bodys, k=2)
+plotter = Plotter()
+eps = plotter.plot_k_distance(tf_idf_review_bodys, k=2)
 
 # db scan with min_samples and eps (eps observed from k-distance graph)
 min_samples_val = 6
