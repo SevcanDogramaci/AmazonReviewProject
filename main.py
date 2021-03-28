@@ -159,9 +159,6 @@ original_review_bodys = list(data_frame["review_body"])
 
 preproc = Preprocessor()
 
-# split into sentences
-#review_bodys = preproc.split_sentences(reviews=review_bodys)
-
 data_frame = None  # to free memory space
 
 # clear reviews body with preprocessing, inside preprocessing.py
